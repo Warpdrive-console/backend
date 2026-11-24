@@ -1,15 +1,21 @@
 import "std:serve"
 import "std:fs"
 
+// setup env data
 import * as env from "./env"
 import * as storage from "./storage"
-import {applyV1} from "./routes"
-import "./handlers"
 
 env.load().unwrap()
 storage.setupS3()
 
-log "loaded s3 shit and cool !!!"
+// setup db
+import * as db from "./db"
+db.setPath(env.get(env.key.DB_PATH))
+
+
+// setup routes
+import {applyV1} from "./routes"
+import "./handlers"
 
 auto r = serve.New()
 r.use(serve.logger())
@@ -22,4 +28,4 @@ applyV1(r.group("/v1"))
 // games likely to be binary blobs, versioning required?
 // will probably make the wd app able to keep a secret so its not a public app
 
-r.run(":8080").unwrap()
+r.run(":6969").unwrap()

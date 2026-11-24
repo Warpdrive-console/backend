@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "main.osl",
   "scripts": {
-    "serve": ["osl", "run", "src/main.osl"]
+    "serve": ["osl", "run", "src/main.osl"],
+    "build": ["osl", "compile", "src/main.osl", "-o", "warpdrive-backend"]
   }
 }

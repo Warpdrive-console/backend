@@ -3,7 +3,7 @@
 import * from "@handlers"
 
 def applyV1(*serve.Router r) (
-  r.GET("/auth", handleAuth)
+  r.POST("/auth", handleAuth)
 )
 
 export {applyV1}

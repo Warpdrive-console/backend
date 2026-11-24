@@ -1,5 +1,19 @@
+import "std:requests"
 
+import "@utils/serve.osl"
+
+struct AuthBody (
+  string validator = ""
+)
 
 def handleAuth(*serve.Context c) (
-  c.text(200, "hello world")
+  auto body = c.body().parse<AuthBody>() catch (
+    badRequest(c, "Request body must be {validator: string}")
+    return
+  )
+  if body.validator == "" (
+    badRequest(c, "Validator cannot be empty")
+    return
+  )
+
 )

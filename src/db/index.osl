@@ -1,0 +1,17 @@
+import "std:fs"
+
+string? dbPath = null
+
+def setPath(string path) (
+  dbPath = fs.cleanPath(path)
+)
+
+def getPath() string? (
+  return dbPath
+)
+
+export {setPath, getPath}
+export {
+  get as userGet,
+  exists as userExists
+} from "./users"

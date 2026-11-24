@@ -1,0 +1,5 @@
+import "std:serve"
+
+def badRequest(*serve.Context c, string message) (
+  c.json(400, {error: message})
+)

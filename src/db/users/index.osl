@@ -1,0 +1,49 @@
+import "std:fs"
+
+import {getPath} from "@db"
+
+struct Session (
+  string id = ""
+  int64 timestamp = 0
+)
+
+struct User (
+  string username = ""
+  string app_token = ""
+  Session[] sessions = []
+)
+
+def _getStrPath() result<string, error> (
+  string? path = getPath()
+  return match path != null (
+    true -> result.ok(path)
+    false -> result.err(error("Called getStrPath before db was ready"))
+  )
+)
+
+def _getUserPath(string userid) result<string, error> (
+  string path = _getStrPath()!
+  string fsPath = fs.joinPath(path, userid ++ ".json")
+  return result.ok(fsPath)
+)
+
+def exists(string userid) boolean (
+  string path = _getUserPath(userid) catch (
+    return false
+  )
+  return fs.exists(path)
+)
+
+def get(string userid) result<*User, error> (
+  string userPath = _getUserPath(userid)!
+  string userData = fs.readFile(userPath)!
+  return userData.parse<*User>()
+)
+
+def set(string userid, *User userData) result<unit, error> (
+  string userPath = _getUserPath(userid)!
+  string userStr = userData.toStr()
+  return fs.writeFile(userPath, userStr)
+)
+
+export {get, exists, set}
