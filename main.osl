@@ -1,0 +1,17 @@
+import "std:serve"
+import "std:env"
+
+auto r = serve.New()
+r.use(serve.logger())
+
+r.GET("/ping", def(*serve.Context c) -> (
+	c.json(200, {pong: ":3"})
+))
+
+// login
+// most of the actual auth can handle client side, server only has to handle validators
+// server stores games and other data like that so we need ways to upload, probably through cf signed urls and shit
+// games likely to be binary blobs, versioning required?
+// will probably make the wd app able to keep a secret so its not a public app
+
+r.run(":8080").unwrap()
