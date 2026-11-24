@@ -1,0 +1,11 @@
+import "std:s3"
+
+import * as env from "@env"
+
+auto S3_ACCOUNT_ID = env.key.S3_ACCOUNT_ID
+auto S3_ACCESS_KEY_ID = env.key.S3_ACCESS_KEY_ID
+auto S3_SECRET_ACCESS_KEY = env.key.S3_SECRET_ACCESS_KEY
+
+def
+
+export {client}

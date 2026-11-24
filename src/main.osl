@@ -1,5 +1,11 @@
 import "std:serve"
-import "std:env"
+import "std:fs"
+
+import * as env from "./env"
+import * as storage from "./storage"
+
+env.load().unwrap()
+log env.get(env.key.ROTUR_APPID)
 
 auto r = serve.New()
 r.use(serve.logger())

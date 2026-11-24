@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "main": "main.osl",
   "scripts": {
-    "serve": ["osl", "run", "main.osl"]
+    "serve": ["osl", "run", "src/main.osl"]
   }
 }
