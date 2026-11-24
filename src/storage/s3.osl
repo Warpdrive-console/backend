@@ -3,9 +3,39 @@ import "std:s3"
 import * as env from "@env"
 
 auto S3_ACCOUNT_ID = env.key.S3_ACCOUNT_ID
+auto S3_BUCKET_NAME = env.key.S3_BUCKET_NAME
 auto S3_ACCESS_KEY_ID = env.key.S3_ACCESS_KEY_ID
 auto S3_SECRET_ACCESS_KEY = env.key.S3_SECRET_ACCESS_KEY
 
-def
+*s3.Client? _bucket = null
 
-export {client}
+def setupS3() (
+  _bucket = s3.new({
+    endpoint: `https://${env.get(S3_ACCOUNT_ID)}.r2.cloudflare.com`,
+    bucket: env.get(S3_BUCKET_NAME),
+    region: "auto",
+    accessKeyId: env.get(S3_ACCESS_KEY_ID),
+    secretAccessKey: env.get(S3_SECRET_ACCESS_KEY)
+  })
+)
+
+def getUploadUrl(string path, int? expires = 600_000) result<string, error> (
+  return match _bucket == null (
+    true -> result.err(error("Called getUploadUrl before calling setupS3"))
+    false -> result.ok(_bucket.presignURL(path, {method: "PUT", expires}))
+  )
+)
+
+def getDownloadUrl(string path, int? expires = 600_000) result<string, error> (
+  return match _bucket == null (
+    true -> result.err(error("Called getDownloadUrl before calling setupS3"))
+    false -> result.ok(_bucket.presignURL(path, {expires}))
+  )
+)
+
+export {
+  _bucket,
+  getUploadUrl,
+  getDownloadUrl,
+  setupS3
+}

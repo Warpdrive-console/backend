@@ -5,6 +5,7 @@ import * as env from "./env"
 import * as storage from "./storage"
 
 env.load().unwrap()
+storage.setupS3()
 log env.get(env.key.ROTUR_APPID)
 
 auto r = serve.New()
