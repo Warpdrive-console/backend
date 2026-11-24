@@ -19,10 +19,6 @@ def load() result<unit, error> (
   return result.ok()
 )
 
-def keys() string[] (
-  return env.keys()
-)
-
 // take only envKeys so that we can prevent misspells
 def get(key keyEnum) string (
   string keyStr = keyEnum.toStr()
@@ -34,4 +30,4 @@ def get(key keyEnum) string (
   return env.get(keyStr)
 )
 
-export {load, get, key, keys}
+export {load, get, key}

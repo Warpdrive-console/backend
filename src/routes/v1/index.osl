@@ -1,0 +1,9 @@
+
+// we version this shit so that breaking updates dont break LITERALLY EVERYTHING
+import * from "@handlers"
+
+def applyV1(*serve.Router r) (
+  r.GET("/auth", handleAuth)
+)
+
+export {applyV1}

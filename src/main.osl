@@ -3,17 +3,18 @@ import "std:fs"
 
 import * as env from "./env"
 import * as storage from "./storage"
+import {applyV1} from "./routes"
+import "./handlers"
 
 env.load().unwrap()
 storage.setupS3()
-log env.get(env.key.ROTUR_APPID)
+
+log "loaded s3 shit and cool !!!"
 
 auto r = serve.New()
 r.use(serve.logger())
 
-r.GET("/ping", def(*serve.Context c) -> (
-	c.json(200, {pong: ":3"})
-))
+applyV1(r.group("/v1"))
 
 // login
 // most of the actual auth can handle client side, server only has to handle validators

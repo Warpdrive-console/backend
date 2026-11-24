@@ -1,0 +1,5 @@
+
+
+def handleAuth(*serve.Context c) (
+  c.text(200, "hello world")
+)
