@@ -10,12 +10,37 @@ def setPath(string path) result<unit, error> (
   return result.ok()
 )
 
+def _getStrPath() result<string, error> (
+  string? path = getPath()
+  return match path != null (
+    true -> result.ok(path)
+    false -> result.err(error("Called getStrPath before db was ready"))
+  )
+)
+
+def _getDbPath(string dir, string userid) result<string, error> (
+  string path = _getStrPath()!
+  string fsPath = fs.joinPath(path, dir, userid ++ ".json")
+  return result.ok(fsPath)
+)
+
 def getPath() string? (
   return dbPath
 )
 
-export {setPath, getPath}
+export {setPath, getPath, _getStrPath, _getDbPath}
+
+export {
+  get as sessionGet,
+  create as sessionCreate,
+  exists as sessionExists,
+  delete as sessionDelete,
+  Session
+} from "./sessions"
+
 export {
   get as userGet,
-  exists as userExists
+  set as userSet,
+  exists as userExists,
+  User
 } from "./users"

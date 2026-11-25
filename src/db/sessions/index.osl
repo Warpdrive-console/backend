@@ -1,0 +1,42 @@
+import "std:fs"
+import "std:date"
+
+import {getPath, _getDbPath} from "@db"
+
+struct Session (
+  string id = ""
+  int64 timestamp = 1
+)
+
+def create(string sessionId) result<unit, error> (
+  string sessionPath = _getDbPath("sessions", sessionId)!
+  auto session = Session(sessionId, date.now().unix())
+  string sessionStr = session.toStr()
+  return fs.writeFile(sessionPath, sessionStr)
+)
+
+def exists(string sessionId) boolean (
+  string path = _getDbPath("sessions", sessionId) catch (
+    return false
+  )
+  return fs.exists(path)
+)
+
+def get(string sessionId) result<*Session, error> (
+  string sessionPath = _getDbPath("sessions", sessionId)!
+  string sessionData = fs.readFile(sessionPath)!
+  return sessionData.parse<*Session>()
+)
+
+def delete(string sessionId) result<unit, error> (
+  string sessionPath = _getDbPath("sessions", sessionId)!
+  return fs.deleteFile(sessionPath)
+)
+
+export {
+  get,
+  exists,
+  delete,
+  create,
+  Session
+}

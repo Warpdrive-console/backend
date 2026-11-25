@@ -1,11 +1,7 @@
 import "std:fs"
 
-import {getPath} from "@db"
-
-struct Session (
-  string id = ""
-  int64 timestamp = 0
-)
+import {getPath, _getDbPath} from "@db"
+import {Session} from "@db/sessions"
 
 struct User (
   string username = ""
@@ -13,18 +9,8 @@ struct User (
   Session[] sessions = []
 )
 
-def _getStrPath() result<string, error> (
-  string? path = getPath()
-  return match path != null (
-    true -> result.ok(path)
-    false -> result.err(error("Called getStrPath before db was ready"))
-  )
-)
-
 def _getUserPath(string userid) result<string, error> (
-  string path = _getStrPath()!
-  string fsPath = fs.joinPath(path, userid ++ ".json")
-  return result.ok(fsPath)
+  return _getDbPath("users", userid)
 )
 
 def exists(string userid) boolean (
@@ -46,4 +32,9 @@ def set(string userid, *User userData) result<unit, error> (
   return fs.writeFile(userPath, userStr)
 )
 
-export {get, exists, set}
+export {
+  get,
+  set,
+  exists,
+  User
+}
