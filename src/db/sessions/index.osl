@@ -30,7 +30,7 @@ def get(string sessionId) result<*Session, error> (
 
 def delete(string sessionId) result<unit, error> (
   string sessionPath = _getDbPath("sessions", sessionId)!
-  return fs.deleteFile(sessionPath)
+  return fs.remove(sessionPath)
 )
 
 export {
