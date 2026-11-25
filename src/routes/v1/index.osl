@@ -1,9 +1,24 @@
 
 // we version this shit so that breaking updates dont break LITERALLY EVERYTHING
 import * from "@handlers"
+import "@utils/middleware.osl"
 
 def applyV1(*serve.Router r) (
   r.POST("/auth", handleAuth)
+  r.POST("/logout", requireAuth, handleLogout)
+
+  r.GET("/me", requireAuth, handleMe) // session info
+  r.GET("/me/library", requireAuth, handleGetLibrary)
+
+  /* r.GET("/games", handleGetGames)
+  r.POST("/games", handlePostGames)
+
+  r.DELETE("/games/:id", handleDeleteGame)
+
+  r.PUT("/games/:id/meta", handleUpdateGame)
+  r.POST("/games/:id/visibility", handleChangeGameVisibility)
+  r.POST("/games/:id/")
+  */
 )
 
 export {applyV1}

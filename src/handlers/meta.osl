@@ -1,0 +1,7 @@
+
+
+def handleMeta(*serve.Context c) (
+    c.json(200, {
+        validatorKey
+    })
+)

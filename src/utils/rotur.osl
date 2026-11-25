@@ -1,0 +1,30 @@
+import "std:rotur"
+
+
+string roturApi = "https://api.rotur.dev"
+
+auto client = rotur.new()
+
+struct ErrorResp (
+    string error = ""
+    string code = ""
+)
+
+struct ValidateResp (
+    boolean valid = false
+    string username = ""
+    string id = ""
+    boolean minor = false
+    int64 expires_at = 0
+)
+
+def validate(string validator, string vKey) result<ValidateResp, error> (
+    auto res = requests.get(`${roturApi}/v3/validators/verify`, {
+        query: { v: vKey }
+    })!
+    
+    auto parsed = json.parse<ValidateResp>(res.body.toStr())!
+    return result.ok(parsed)
+)
+
+export {validate}

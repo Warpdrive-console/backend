@@ -1,6 +1,10 @@
 import "std:serve"
 import "std:fs"
 
+// global constants
+const<string> validatorKey = "warpdrive-backend"
+
+
 // setup env data
 import * as env from "./env"
 import * as storage from "./storage"
@@ -10,8 +14,7 @@ storage.setupS3()
 
 // setup db
 import * as db from "./db"
-db.setPath(env.get(env.key.DB_PATH))
-
+db.setPath(env.get(env.key.DB_PATH)).unwrap()
 
 // setup routes
 import {applyV1} from "./routes"
@@ -28,4 +31,5 @@ applyV1(r.group("/v1"))
 // games likely to be binary blobs, versioning required?
 // will probably make the wd app able to keep a secret so its not a public app
 
+log "running on http://localhost:6969"
 r.run(":6969").unwrap()

@@ -1,0 +1,12 @@
+
+
+def requireAuth(*serve.Context c) (
+  string? sessionId = c.cookie("sessionId")
+  if sessionId == null (
+    c.json(401, {
+      error: "Unauthorized"
+    })
+    c.abort()
+  )
+  c.next()
+)

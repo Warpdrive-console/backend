@@ -1,6 +1,8 @@
 import "std:requests"
+import "std:crypto"
 
 import "@utils/serve.osl"
+import {validate} from "@utils/rotur.osl"
 
 struct AuthBody (
   string validator = ""
@@ -16,4 +18,14 @@ def handleAuth(*serve.Context c) (
     return
   )
 
+  auto validatorResp = validate(body.validator, validatorKey) catch (err) (
+    badRequest(c, err.message)
+    return
+  )
+
+  string sessionId = crypto.randomUUID()
+
+  
+
+  c.setCookie("sessionId", sessionId)
 )

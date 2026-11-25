@@ -2,8 +2,12 @@ import "std:fs"
 
 string? dbPath = null
 
-def setPath(string path) (
+def setPath(string path) result<unit, error> (
   dbPath = fs.cleanPath(path)
+  void fs.mkdir(fs.joinPath(dbPath, "users"))
+  void fs.mkdir(fs.joinPath(dbPath, "sessions"))
+
+  return result.ok()
 )
 
 def getPath() string? (
